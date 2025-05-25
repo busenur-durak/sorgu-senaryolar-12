@@ -1,0 +1,36 @@
+1. Film uzunluğu ortalamadan fazla olan film sayısı:
+SELECT COUNT(*) 
+FROM film 
+WHERE length > (
+    SELECT AVG(length) FROM film
+);
+
+2. En yüksek rental_rate değerine sahip film sayısı:
+SELECT COUNT(*) 
+FROM film 
+WHERE rental_rate = (
+    SELECT MAX(rental_rate) FROM film
+);
+🔹 3. En düşük rental_rate ve en düşük replacement_cost değerine sahip filmleri listeleyelim:
+SELECT * 
+FROM film 
+WHERE rental_rate = (
+    SELECT MIN(rental_rate) FROM film
+)
+AND replacement_cost = (
+    SELECT MIN(replacement_cost) FROM film
+);
+🔹 4. payment tablosunda en fazla alışveriş yapan müşterileri (customer_id) sıralayalım:
+En çok ödeme yapan müşterileri, ödeme sayısına göre büyükten küçüğe sıralar.
+
+SELECT customer_id, COUNT(*) AS payment_count
+FROM payment
+GROUP BY customer_id
+ORDER BY payment_count DESC;
+Eğer en fazla ödeme yapan tek müşteriyi çekmek istersen:
+
+SELECT customer_id, COUNT(*) AS payment_count
+FROM payment
+GROUP BY customer_id
+ORDER BY payment_count DESC
+LIMIT 1;
